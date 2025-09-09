@@ -392,7 +392,7 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
     console.log('Downloading surface texture images...')
     // Design components textures
     // white water / turbulence texture
-    let imageUrl = '/textures/turbulence.jpg'; 
+    let imageUrl = './textures/turbulence.jpg'; 
     let imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 0)
     // coral reef texture
