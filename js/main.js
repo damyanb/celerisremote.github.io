@@ -396,39 +396,39 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
     let imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 0)
     // coral reef texture
-    imageUrl = '/textures/coralreef.jpg'; 
+    imageUrl = './textures/coralreef.jpg'; 
     imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 1)
     // oyster / mussel bed texture
-    imageUrl = '/textures/oysterbed.jpg'; 
+    imageUrl = './textures/oysterbed.jpg'; 
     imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 2)
     // mangrove texture
-    imageUrl = '/textures/mangrove.jpg'; 
+    imageUrl = './textures/mangrove.jpg'; 
     imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 3)
     // kelp texture
-    imageUrl = '/textures/kelpbed.jpg'; 
+    imageUrl = './textures/kelpbed.jpg'; 
     imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 4)
     // grass texture
-    imageUrl = '/textures/grass.jpg'; 
+    imageUrl = './textures/grass.jpg'; 
     imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 5)
     // scrub texture
-    imageUrl = '/textures/scrub.jpg'; 
+    imageUrl = './textures/scrub.jpg'; 
     imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 6)
     // rubblemound texture
-    imageUrl = '/textures/rubble.jpg'; 
+    imageUrl = './textures/rubble.jpg'; 
     imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 7)
     // dune texture
-    imageUrl = '/textures/dune_veg.jpg'; 
+    imageUrl = './textures/dune_veg.jpg'; 
     imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 8)
     // arrow texture
-    imageUrl = '/textures/arrow.png'; 
+    imageUrl = './textures/arrow.png'; 
     imData = await loadImageBitmap(imageUrl);    
     copyImageBitmapToTexture(device, imData, txSamplePNGs, 9)
 
