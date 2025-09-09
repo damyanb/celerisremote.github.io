@@ -45,7 +45,7 @@
     "sedC1_psi": 5e-05,
     "sedC1_criticalshields": 0.045,
     "sedC1_denrat": 2.65,
-    "run_example": -1,
+    "run_example": 0,
     "exampleDirs": [
         "./examples/Ventura/",
         "./examples/Santa_Cruz/"
