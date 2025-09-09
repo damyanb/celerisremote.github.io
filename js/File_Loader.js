@@ -510,9 +510,9 @@ export async function loadUserImage(fileObject) {
 // function to load cubemap face images
 export async function loadCubeBitmaps() {
     const urls = {
-        px: '/skybox/px.jpg', nx: '/skybox/nx.jpg',
-        py: '/skybox/py.jpg', ny: '/skybox/ny.jpg',
-        pz: '/skybox/pz.jpg', nz: '/skybox/nz.jpg'
+        px: './skybox/px.jpg', nx: './skybox/nx.jpg',
+        py: './skybox/py.jpg', ny: './skybox/ny.jpg',
+        pz: './skybox/pz.jpg', nz: './skybox/nz.jpg'
       };
       
     const entries = Object.entries(urls);
