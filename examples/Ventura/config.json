@@ -1,8 +1,8 @@
 {
-    "WIDTH": 250,
-    "HEIGHT": 95,
-    "dx": 4,
-    "dy": 4,
+    "WIDTH": 499,
+    "HEIGHT": 189,
+    "dx": 2,
+    "dy": 2,
     "Courant_num": 0.15,
     "timeScheme": 2,
     "pred_or_corrector": 1,
@@ -45,7 +45,7 @@
     "sedC1_psi": 5e-05,
     "sedC1_criticalshields": 0.045,
     "sedC1_denrat": 2.65,
-    "run_example": 0,
+    "run_example": -1,
     "exampleDirs": [
         "./examples/Ventura/",
         "./examples/Santa_Cruz/"
