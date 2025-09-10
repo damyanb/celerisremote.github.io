@@ -265,6 +265,7 @@
 
                         <button id="start-simulation-btn">Start Simulation</button>
                         <button id="mirror-canvas-btn">Mirror canvas</button>
+                        <button id="start-recording-btn">Start recording</button>
                         <button id="stop-recording-btn">Stop recording</button>
                         <br />
                         <br />
@@ -1489,96 +1490,9 @@
     <!-- Wave solution control script - everything runs from this -->
     <script type="module" src="js/main.js"></script>
  
-    <script src="js/webm-muxer.js"></script>
+    <script type="module" src="js/webm-muxer.js"></script>
     
     
-    <script>
-        const canvas = document.getElementById('webgpuCanvas');
-
-        setInterval(()=>{
-            console.log("canvas", canvas.width, canvas.height);
-
-        },1000);
-
-        let muxed, videoEncoder;
-
-        function initMuxer(){
-            muxer = new WebMMuxer.Muxer({
-                target: new WebMMuxer.ArrayBufferTarget(),
-                video: {
-                    codec: 'V_VP9',
-                    width: canvas.width,
-                    height: canvas.height
-                }
-            });
-        }
-
-        function initVideo(){
-            initMuxer();
-
-            videoEncoder = new VideoEncoder({
-                output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
-                error: e => console.error(e)
-            });        
-    
-            videoEncoder.configure({
-                codec: 'vp09.00.10.08',
-                // codec: 'vp8',
-                width: canvas.width,
-                height: canvas.height,
-                // bitrate: 1e6,
-                framerate: 30
-            });
-    
-            console.log("canvas", canvas.width, canvas.height);
-        }
-
-
-
-        let saved = false;
-
-        // Add frames to the encoder
-        let frameCount = -1;
-        function addFrame() {
-            if(saved) return;
-            if(!videoEncoder) {
-                
-                return;
-            }
-            frameCount++;
-            if(frameCount % 2 !== 0) return; 
-
-            const timestamp = parseInt(frameCount/2) * 1/30 * 1000000;
-            console.log("frame count=", frameCount);
-            const frame = new VideoFrame(canvas, {timestamp});
-            videoEncoder.encode(frame, { keyFrame: false });
-
-            frame.close(); // Free memory
-        }
-
-    
-        document.getElementById('stop-recording-btn').addEventListener('click', async function (){
-            await videoEncoder.flush();
-            muxer.finalize();
-
-            let { buffer } = muxer.target; // Buffer contains final WebM file
-
-            // Save the video file
-            const blob = new Blob([buffer]);
-            const url = URL.createObjectURL(blob);
-
-            // Trigger download
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "output.webm";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-
-            saved = true;
-            console.log("Video saved!");
-        });        
-    </script>
     <script>
         async function mirrorCanvas() {
             // Get the original WebGPU canvas

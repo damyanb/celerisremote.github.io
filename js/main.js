@@ -2473,7 +2473,7 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
         }
         
         addFrame();
-        
+
         requestAnimationFrame(frame);  // Call the next frame, restarts the function
 
     }
@@ -3253,7 +3253,6 @@ document.addEventListener('DOMContentLoaded', function () {
         startSimulation(); 
         const delay = 5000; // Time in milliseconds (1000 ms = 1 second)
         setTimeout(()=>{
-            initVideo();
             updateAllUIElements();
         }, delay);
 

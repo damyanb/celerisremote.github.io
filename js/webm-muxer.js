@@ -1486,4 +1486,6 @@ ${notes}`;
   };
   return __toCommonJS(src_exports);
 })();
-if (typeof module === "object" && typeof module.exports === "object") Object.assign(module.exports, WebMMuxer)
+// if (typeof module === "object" && typeof module.exports === "object") Object.assign(module.exports, WebMMuxer)
+
+export  {WebMMuxer};
