@@ -34,6 +34,29 @@ import { displayCalcConstants, displaySimStatus, displayTimeSeriesLocations, dis
 import { mat4, vec3 } from 'https://cdn.jsdelivr.net/npm/gl-matrix/esm/index.js';
 import { addFrame, initVideo } from "./streaming.js";
 
+async function waitForGPUCompletion(device) {
+    // Create a buffer with MAP_READ flag for CPU readback
+    const readbackBuffer = device.createBuffer({
+        size: 4,
+        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
+    });
+
+    // Create a GPU command encoder
+    const encoder = device.createCommandEncoder();
+    // Encode some dummy operation (e.g., copying a small buffer)
+    encoder.copyBufferToBuffer(readbackBuffer, 0, readbackBuffer, 0, 4);
+
+    // Submit work to the queue
+    device.queue.submit([encoder.finish()]);
+
+    // Wait for GPU to complete by mapping the buffer
+    await readbackBuffer.mapAsync(GPUMapMode.READ);
+    
+    // Cleanup
+    readbackBuffer.destroy();
+}
+
+
 // Get a reference to the HTML canvas element with the ID 'webgpuCanvas'
 const canvas = document.getElementById('webgpuCanvas');
 
@@ -2473,8 +2496,10 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
             
         }
         
-        addFrame();
+        await addFrame();
 
+        await waitForGPUCompletion(device);
+        
         requestAnimationFrame(frame);  // Call the next frame, restarts the function
 
     }
