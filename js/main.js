@@ -50,6 +50,7 @@ let txSatMap = null;
 let txDraw = null;
 let context = null;
 let adapter = null;
+let total_time;
 
 // Initialize a global set to track texture, pipeline objects
 const allTextures = new Set();
@@ -1236,7 +1237,7 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
     // Log that the buffers have been set up.
     console.log("Buffers set up.");
 
-    let total_time = 0;          // Initialize time, which might be used for animations or simulations.
+    total_time = 0;          // Initialize time, which might be used for animations or simulations.
     let frame_count = 0;   // Counter to keep track of the number of rendered frames.
     let frame_count_since_http_update = 0;   // Counter to keep track of the number of rendered frames.
     let total_time_since_http_update = 0;          // Initialize time, which might be used for animations or simulations.
@@ -3248,24 +3249,35 @@ document.addEventListener('DOMContentLoaded', function () {
     // start simulation
 
     // Ensure to bind this function to your button's 'click' event in the HTML or here in the JS.
+    // Ensure to bind this function to your button's 'click' event in the HTML or here in the JS.
     document.getElementById('start-simulation-btn').addEventListener('click', function () {  // running with user loaded files
-        initializeWebGPUApp().then(()=>{
+        calc_constants.run_example = -1;  // reset back to no example (for case when loading files after running example)
+        startSimulation(); 
+        const delay = 5000; // Time in milliseconds (1000 ms = 1 second)
+        setTimeout(updateAllUIElements, delay);
+    });
+
+
+    // run example simul    ation
+
+    // Ensure to bind this function to your button's 'click' event in the HTML or here in the JS.
+    document.getElementById('run-example-simulation-btn').addEventListener('click', async function () {  // running with user example files
+        let fileHandle = await window.showSaveFilePicker({
+            suggestedName: `video.webm`,
+            types: [{
+                description: 'Video File',
+                accept: { 'video/webm': ['.webm'] }
+            }],
+        });     
+        
+        await initializeWebGPUApp().then(async function(){
             // setTimeout(()=>{
-                initVideo();
+             
+                await initVideo(fileHandle);
                 updateAllUIElements();
             // }, delay);
         });
-    });
-
-    // run example simulation
-
-    // Ensure to bind this function to your button's 'click' event in the HTML or here in the JS.
-    document.getElementById('run-example-simulation-btn').addEventListener('click', function () {  // running with user example files
-        calc_constants.run_example = document.getElementById('run_example-select').value;
-        initializeWebGPUApp();
-        const delay = 5000; // Time in milliseconds (1000 ms = 1 second)
-        setTimeout(updateAllUIElements, delay);
-
+        // const delay = 5000; // Time in milliseconds (1000 ms = 1 second)
     });
 
     // This function will be called when the user clicks "Start Simulation."
@@ -3461,3 +3473,4 @@ async function updateChartData() {
 
 // Set an interval to update the chart every second (1000 milliseconds)
 setInterval(updateChartData, 1000);
+export {total_time}
