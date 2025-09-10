@@ -4,7 +4,7 @@ import {total_time} from './main.js';
 
 const canvas = document.getElementById('webgpuCanvas');
 
-let muxer, videoEncoder, fileStream, subtitleEncoder;
+let muxer, videoEncoder, fileStream, subtitleEncoder, videoEncoderPromise;
 
 const webvttHeader = "WEBVTT";
 let simpleWebvttFile =
@@ -36,6 +36,7 @@ function secondsToTime(totalSeconds) {
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${formattedSeconds(seconds)}`;
 }
 function secondsToEntry(seconds, cueSeconds){
+    console.log("(seconds, cueSeconds", seconds, cueSeconds)
     const lastEntryTimestamp = webvttEntries?.[webvttEntries.length-1]?.[0] ?? 0;
     
     const time0String = secondsToTime(lastEntryTimestamp);
@@ -44,6 +45,7 @@ function secondsToEntry(seconds, cueSeconds){
     const entry=
 `\n\n${time0String} --> ${time1String}
 Tiempo: ${cueSeconds}`;
+    console.log("enntry", entry);
     return entry;
 }
 
@@ -78,7 +80,7 @@ async function initMuxer(fileHandle){
 
 
 export async function initVideo(fileHandler){
-    initMuxer(fileHandler).then(()=>{
+    videoEncoderPromise = initMuxer(fileHandler).then(()=>{
         videoEncoder = new VideoEncoder({
             output: (chunk, meta) =>{
                 // console.log("adding chunk!");
@@ -112,8 +114,9 @@ const skip = 2;
 const fps = 30;
 const times=[];
 window.times = times;
-export function addFrame() {
+export async function addFrame() {
     if(saved) return;
+    await videoEncoderPromise;
     if(!videoEncoder) {
         return;
     }
@@ -123,14 +126,22 @@ export function addFrame() {
     if(frameCount % skip !== 0) return; 
     
 
-    console.log("videoFrameCount", videoFrameCount)
+    // console.log("videoFrameCount", videoFrameCount)
     const timestamp = videoFrameCount * 1/fps * 1_000_000;
     times.push(total_time);
+
 
     // console.log("video frame count=", frameCount/skip);
     const frame = new VideoFrame(canvas, {timestamp});
     videoEncoder.encode(frame, { keyFrame: videoFrameCount % 30 ===0 });
-    webvttEntries = [...webvttEntries, [timestamp/1_000_000, secondsToEntry(timestamp/1_000_000)]];
+
+    webvttEntries = [...webvttEntries, [timestamp/1_000_000, secondsToEntry(timestamp/1_000_000, total_time)]];
+
+
+    if(total_time>10*60){
+        await stopRecording();
+        debugger;
+    }
 
     // flushing
     if(videoFrameCount % fps === 0 ){
@@ -149,7 +160,9 @@ document.getElementById('start-recording-btn').addEventListener('click', async f
     
     initVideo();
 });
-document.getElementById('stop-recording-btn').addEventListener('click', async function (){
+
+
+async function stopRecording(){
 
     const entriesToSave = webvttEntries.slice(0,-1);
     webvttEntries = webvttEntries.slice(-1);
@@ -178,7 +191,8 @@ document.getElementById('stop-recording-btn').addEventListener('click', async fu
     console.log(`FileStream duration: ${(endFileStreamTime - startFileStreamTime).toFixed(2)} ms`);
 
     console.log("Video saved!");
-});        
+}
+document.getElementById('stop-recording-btn').addEventListener('click',stopRecording);        
 
 
 function downloadStringAsFile(filename, content) {
