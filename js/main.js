@@ -32,6 +32,7 @@ import { fetchShader, runComputeShader, runCopyTextures } from './Run_Compute_Sh
 import { runTridiagSolver } from './Run_Tridiag_Solver.js';  // function to run PCR triadiag solver, works for all
 import { displayCalcConstants, displaySimStatus, displayTimeSeriesLocations, displaySlideVolume, ConsoleLogRedirection} from './display_parameters.js';  // starting point for display of simulation parameters
 import { mat4, vec3 } from 'https://cdn.jsdelivr.net/npm/gl-matrix/esm/index.js';
+import { addFrame } from "./streaming.js";
 
 // Get a reference to the HTML canvas element with the ID 'webgpuCanvas'
 const canvas = document.getElementById('webgpuCanvas');
@@ -2453,7 +2454,6 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
             calc_constants.writesurfaces = 0; // do not write surfaces
             calc_constants.trigger_writesurface = 0; // reset trigger
         }
-
         if(calc_constants.writesurfaces > 0 && calc_constants.simPause < 0){
             dt_since_last_write = dt_since_last_write + calc_constants.dt * calc_constants.render_step;
 
@@ -2471,6 +2471,8 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
             }
             
         }
+        
+        addFrame();
         
         requestAnimationFrame(frame);  // Call the next frame, restarts the function
 
@@ -3250,7 +3252,11 @@ document.addEventListener('DOMContentLoaded', function () {
         calc_constants.run_example = -1;  // reset back to no example (for case when loading files after running example)
         startSimulation(); 
         const delay = 5000; // Time in milliseconds (1000 ms = 1 second)
-        setTimeout(updateAllUIElements, delay);
+        setTimeout(()=>{
+            initVideo();
+            updateAllUIElements();
+        }, delay);
+
     });
 
     // run example simulation

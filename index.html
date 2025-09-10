@@ -172,6 +172,9 @@
         input[type="number"] {
             width: 100px;  /* Set the width of all input elements of type number */
         }
+        #videoTarget { 
+            position:absolute;
+        }        
 
 
     </style>
@@ -261,6 +264,8 @@
                         <br />
 
                         <button id="start-simulation-btn">Start Simulation</button>
+                        <button id="mirror-canvas-btn">Mirror canvas</button>
+                        <button id="stop-recording-btn">Stop recording</button>
                         <br />
                         <br />
                         <html4f>
@@ -1484,6 +1489,119 @@
     <!-- Wave solution control script - everything runs from this -->
     <script type="module" src="js/main.js"></script>
  
+    <script src="js/webm-muxer.js"></script>
     
+    
+    <script>
+        const canvas = document.getElementById('webgpuCanvas');
+
+        setInterval(()=>{
+            console.log("canvas", canvas.width, canvas.height);
+
+        },1000);
+
+        let muxed, videoEncoder;
+
+        function initMuxer(){
+            muxer = new WebMMuxer.Muxer({
+                target: new WebMMuxer.ArrayBufferTarget(),
+                video: {
+                    codec: 'V_VP9',
+                    width: canvas.width,
+                    height: canvas.height
+                }
+            });
+        }
+
+        function initVideo(){
+            initMuxer();
+
+            videoEncoder = new VideoEncoder({
+                output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
+                error: e => console.error(e)
+            });        
+    
+            videoEncoder.configure({
+                codec: 'vp09.00.10.08',
+                // codec: 'vp8',
+                width: canvas.width,
+                height: canvas.height,
+                // bitrate: 1e6,
+                framerate: 30
+            });
+    
+            console.log("canvas", canvas.width, canvas.height);
+        }
+
+
+
+        let saved = false;
+
+        // Add frames to the encoder
+        let frameCount = -1;
+        function addFrame() {
+            if(saved) return;
+            if(!videoEncoder) {
+                
+                return;
+            }
+            frameCount++;
+            if(frameCount % 2 !== 0) return; 
+
+            const timestamp = parseInt(frameCount/2) * 1/30 * 1000000;
+            console.log("frame count=", frameCount);
+            const frame = new VideoFrame(canvas, {timestamp});
+            videoEncoder.encode(frame, { keyFrame: false });
+
+            frame.close(); // Free memory
+        }
+
+    
+        document.getElementById('stop-recording-btn').addEventListener('click', async function (){
+            await videoEncoder.flush();
+            muxer.finalize();
+
+            let { buffer } = muxer.target; // Buffer contains final WebM file
+
+            // Save the video file
+            const blob = new Blob([buffer]);
+            const url = URL.createObjectURL(blob);
+
+            // Trigger download
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "output.webm";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            saved = true;
+            console.log("Video saved!");
+        });        
+    </script>
+    <script>
+        async function mirrorCanvas() {
+            // Get the original WebGPU canvas
+            const originalCanvas = document.getElementById('webgpuCanvas');
+            
+            // Open a new popup window
+            const popup = window.open("", "popup", "width=800,height=600");
+            
+            // Add a new canvas to the popup
+            const newCanvas = popup.document.createElement('canvas');
+            newCanvas.width = originalCanvas.width;
+            newCanvas.height = originalCanvas.height;
+            popup.document.body.appendChild(newCanvas);
+            
+            // Get the 2D context of the new canvas
+            const newContext = newCanvas.getContext('2d');
+            
+            // Draw the content of the original WebGPU canvas onto the new canvas
+            newContext.drawImage(originalCanvas, 0, 0);
+        }
+
+        document.getElementById('mirror-canvas-btn').addEventListener('click', mirrorCanvas);
+        
+    </script>    
 </body>
 </html>
