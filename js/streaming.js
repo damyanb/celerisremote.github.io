@@ -24,11 +24,11 @@ async function initMuxer(){
     });
 }
 
-function initVideo(){
+export function initVideo(){
     initMuxer().then(()=>{
         videoEncoder = new VideoEncoder({
             output: (chunk, meta) =>{
-                console.log("adding chunk!");
+                // console.log("adding chunk!");
                 muxer.addVideoChunk(chunk, meta)
             },
             error: e => console.error(e)
@@ -65,11 +65,11 @@ export function addFrame() {
     if(frameCount % skip !== 0) return; 
 
     const timestamp = parseInt(frameCount/skip) * 1/30 * 1000000;
-    console.log("video frame count=", frameCount/skip);
+    // console.log("video frame count=", frameCount/skip);
     const frame = new VideoFrame(canvas, {timestamp});
     videoEncoder.encode(frame, { keyFrame: frameCount   % 90 ===0 });
 
-    if(frameCount % 30 === 0 ){console.log("flushing"); videoEncoder.flush()};
+    if(frameCount % 30 === 0 ){console.log(`flushing #${Math.floor(frameCount/30)}  at frame ${frameCount}`,); videoEncoder.flush()};
 
     frame.close(); // Free memory
 }
@@ -94,4 +94,4 @@ document.getElementById('stop-recording-btn').addEventListener('click', async fu
     console.log(`FileStream duration: ${(endFileStreamTime - startFileStreamTime).toFixed(2)} ms`);
 
     console.log("Video saved!");
-});        
+});
