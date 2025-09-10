@@ -61,7 +61,7 @@ export function displayCalcConstants(calc_constants, total_time) {
     addSpacerToContainer(container);
     addTextToContainer(`--- Runtime Parameters ---`, container);
     addTextToContainer(`Simulated Time (min) Since Config Change: ${Math.round(total_time / 60. * 1000) / 1000}`, container);
-    addTextToContainer(`Faster-than-Realtime Ratio: ${Math.round(total_time / calc_constants.elapsedTime_update * 10) / 10}`, container);
+    addTextToContainer(`Faster-than-Realtime Ratio: ${(total_time / calc_constants.elapsedTime_update).toFixed(5)}`, container);
     addTextToContainer(`Render Frame Interval: ${calc_constants.render_step}`, container);
     // let frame_count_since_http_update = (total_time_since_http_update/calc_constants.dt);
     // fps = iteraciones / tiempo real
