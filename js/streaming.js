@@ -35,14 +35,15 @@ function secondsToTime(totalSeconds) {
     // Format as hh:mm:ss
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${formattedSeconds(seconds)}`;
 }
-function secondsToEntry(seconds){
+function secondsToEntry(seconds, cueSeconds){
     const lastEntryTimestamp = webvttEntries?.[webvttEntries.length-1]?.[0] ?? 0;
     
     const time0String = secondsToTime(lastEntryTimestamp);
     const time1String = secondsToTime(seconds);
+    const cueText =  cueSeconds.toFixed(2);
     const entry=
 `\n\n${time0String} --> ${time1String}
-Tiempo: ${time1String}`;
+Tiempo: ${cueSeconds}`;
     return entry;
 }
 
