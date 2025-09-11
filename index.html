@@ -172,6 +172,9 @@
         input[type="number"] {
             width: 100px;  /* Set the width of all input elements of type number */
         }
+        #videoTarget { 
+            position:absolute;
+        }        
 
 
     </style>
@@ -261,6 +264,9 @@
                         <br />
 
                         <button id="start-simulation-btn">Start Simulation</button>
+                        <button id="mirror-canvas-btn">Mirror canvas</button>
+                        <button id="start-recording-btn">Start recording</button>
+                        <button id="stop-recording-btn">Stop recording</button>
                         <br />
                         <br />
                         <html4f>
@@ -1484,6 +1490,32 @@
     <!-- Wave solution control script - everything runs from this -->
     <script type="module" src="js/main.js"></script>
  
+    <script type="module" src="js/webm-muxer.js"></script>
     
+    
+    <script>
+        async function mirrorCanvas() {
+            // Get the original WebGPU canvas
+            const originalCanvas = document.getElementById('webgpuCanvas');
+            
+            // Open a new popup window
+            const popup = window.open("", "popup", "width=800,height=600");
+            
+            // Add a new canvas to the popup
+            const newCanvas = popup.document.createElement('canvas');
+            newCanvas.width = originalCanvas.width;
+            newCanvas.height = originalCanvas.height;
+            popup.document.body.appendChild(newCanvas);
+            
+            // Get the 2D context of the new canvas
+            const newContext = newCanvas.getContext('2d');
+            
+            // Draw the content of the original WebGPU canvas onto the new canvas
+            newContext.drawImage(originalCanvas, 0, 0);
+        }
+
+        document.getElementById('mirror-canvas-btn').addEventListener('click', mirrorCanvas);
+        
+    </script>    
 </body>
 </html>
