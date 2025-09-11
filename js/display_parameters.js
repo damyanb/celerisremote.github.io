@@ -104,8 +104,8 @@ export function displaySimStatus(calc_constants, total_time, total_time_since_ht
         addTextToContainer(`High-Order Boussinesq Simulation`, container);
     }
     addTextToContainer(`,      Simulated Time (min): ${Math.round(total_time / 60. * 10) / 10}`, container);
-    addTextToContainer(`,      Faster-than-Realtime Ratio: ${Math.round(total_time_since_http_update / calc_constants.elapsedTime_update * 10) / 10}`, container);
-    
+    // addTextToContainer(`,      Faster-than-Realtime Ratio: ${Math.round(total_time_since_http_update / calc_constants.elapsedTime_update * 10) / 10}`, container);
+    addTextToContainer(`Faster-than-Realtime Ratio: ${(total_time / calc_constants.elapsedTime_update).toFixed(5)}`, container);
 }
 
 
