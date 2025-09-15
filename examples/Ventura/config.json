@@ -1,8 +1,8 @@
 {
-    "WIDTH": 4980,
-    "HEIGHT": 3220,
-    "dx": 0.1,
-    "dy": 0.1,
+    "WIDTH": 3320,
+    "HEIGHT": 2147,
+    "dx": 0.15,
+    "dy": 0.15,
     "Courant_num": 0.15,
     "timeScheme": 2,
     "pred_or_corrector": 1,
