@@ -1,8 +1,8 @@
 {
-    "WIDTH": 3992,
-    "HEIGHT": 1508,
-    "dx": 0.25,
-    "dy": 0.25,
+    "WIDTH": 4980,
+    "HEIGHT": 3220,
+    "dx": 0.1,
+    "dy": 0.1,
     "Courant_num": 0.15,
     "timeScheme": 2,
     "pred_or_corrector": 1,
@@ -10,7 +10,7 @@
     "Bcoef": 0.06666666666666667,
     "g": 9.80665,
     "seaLevel": 0,
-    "base_depth": 4.9135147,
+    "base_depth": 3.4866156,
     "Theta": 2.0,
     "friction": 0.015,
     "isManning": 0,
@@ -185,6 +185,6 @@
     "tooltipVal_Hs": 0.0,
     "tooltipVal_friction": 0.0,
     "adapt_render_step": 1,
-    "zmin": -4.9135147,
+    "zmin": -3.4866156,
     "zmax": 2.000000000000001
 }
