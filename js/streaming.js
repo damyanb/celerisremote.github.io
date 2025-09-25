@@ -138,7 +138,7 @@ export async function addFrame() {
     webvttEntries = [...webvttEntries, [timestamp/1_000_000, secondsToEntry(timestamp/1_000_000, total_time)]];
 
 
-    if(total_time>10*60){
+    if(total_time>20*60){
         await stopRecording();
         debugger;
     }
