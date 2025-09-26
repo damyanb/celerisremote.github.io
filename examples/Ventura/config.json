@@ -98,7 +98,7 @@
     "write_P": 1,
     "write_Q": 1,
     "write_turb": 0,
-    "dt_writesurface": 1.0,
+    "dt_writesurface": 10.0,
     "fileWritePause": 100,
     "write_individual_surface": 0,
     "which_surface_to_write": 0,
@@ -190,4 +190,5 @@
     "trigger_writesurface": 1,
     "trigger_writesurface_start_time": 0.0,
     "trigger_writesurface_end_time": 10000
+
 }
