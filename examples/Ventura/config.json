@@ -32,7 +32,7 @@
     "incident_wave_H": 0.0,
     "incident_wave_T": 0.0,
     "incident_wave_direction": 0.0,
-    "numberOfWaves": 0,
+    "numberOfWaves": 200,
     "ship_posx": -100.0,
     "ship_posy": 450.0,
     "ship_width": 10.0,
@@ -192,4 +192,5 @@
     "trigger_writesurface_end_time": 10000
 
 }
+
 
