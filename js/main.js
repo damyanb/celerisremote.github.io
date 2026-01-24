@@ -137,7 +137,9 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
     device = await adapter.requestDevice({
         // Enable built-in validation
         requiredFeatures: [],
-        requiredLimits: {},
+        requiredLimits: {
+            maxTextureDimension2D: 16384  // Aumentar límite de texturas para batimetrías grandes
+        },
         forceFallbackAdapter: false,
     });
     console.log("GPU Device acquired, starting resource creation...");
@@ -3498,4 +3500,5 @@ async function updateChartData() {
 
 // Set an interval to update the chart every second (1000 milliseconds)
 setInterval(updateChartData, 1000);
+
 export {total_time}
