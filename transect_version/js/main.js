@@ -116,7 +116,7 @@ async function initializeWebGPUApp(configContent, bathymetryContent, waveContent
         // Enable built-in validation
         requiredFeatures: [],
         requiredLimits: {
-            maxTextureDimension2D: 32768  // Aumentar límite de texturas para batimetrías grandes
+            maxTextureDimension2D: 32768 // Aumentar límite de texturas para batimetrías grandes
         },
         forceFallbackAdapter: false,
     });
